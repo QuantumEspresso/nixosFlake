@@ -1,0 +1,87 @@
+{ config, pkgs, ... }:
+let
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in
+{
+  config = {
+    environment.systemPackages = with pkgs;[
+      #(python311.withPackages(ps: with ps; [ pandas psutil xvfbwrapper requests screeninfo colorthief qtile qtile-extras screeninfo types-dateutil]))
+      neovim
+      ripgrep
+      home-manager
+      unstable.pam
+      wget
+      udisks
+      mdadm
+      alacritty
+      zsh
+      neovim
+      ranger
+      xournalpp
+      krita
+      gedit
+      tk
+      gnat
+      docker-compose
+      gimp-with-plugins
+      htop
+      lm_sensors
+      fzf
+      mc
+      unzip
+      poppler_utils
+      xsane
+      libnotify
+      pciutils
+      curl
+      git
+      rsync
+      vlc
+      bluez
+      bluez-tools
+      blueman
+      networkmanager
+      networkmanagerapplet
+      openconnect
+      networkmanager-openconnect
+      ntfs3g
+      keepassxc
+      yubico-pam
+      libyubikey
+      yubioath-flutter
+      yubikey-agent
+      yubikey-manager
+      yubikey-touch-detector
+      yubikey-personalization
+      yubikey-manager-qt
+      yubikey-personalization-gui
+      openssh
+      sshfs
+      firefox
+      brave
+      tor
+      tor-browser-bundle-bin
+      lynx
+      gnugrep
+      pulseaudio
+      pulsemixer
+      os-prober
+      grub2
+      unzip
+      p7zip
+      killall
+      google-chrome
+      libreoffice
+      cmatrix
+      wineWowPackages.waylandFull
+      winetricks
+      wireshark
+      libgcc
+      zlib
+      libsForQt5.full
+      appimage-run
+      pdftk
+      distrobox
+    ];
+  };
+}
