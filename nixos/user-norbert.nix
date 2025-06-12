@@ -89,7 +89,7 @@ in {
       mc
       khal
       syncthing
-      syncthing-tray
+      #      syncthing-tray
       gromit-mpx
       xsane
       keepassxc
@@ -131,7 +131,7 @@ in {
       #autosuggestions.enable = true;
       syntaxHighlighting.enable = true;
       history.size = 10000;
-      initExtra = ''pokemonsay Catch me if you can!'';
+      initContent = ''pokemonsay Catch me if you can!'';
       sessionVariables = {
         EDITOR = "nvim";
         GPG_TTY = "tty";
@@ -330,7 +330,7 @@ in {
       enableSshSupport = true;
       enableExtraSocket = true;
       maxCacheTtl = 120;
-      pinentryPackage = pkgs.pinentry-curses;
+      pinentry.package = pkgs.pinentry-curses;
       extraConfig = ''
         ttyname $GPG_TTY
       '';

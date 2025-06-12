@@ -32,8 +32,6 @@
     libnotify
     hyprpaper
     pyprland
-    hyprgui
-    hyprwall
     hyprshot
     hyprlock
     hypridle
@@ -48,5 +46,8 @@
     gtk4
     nodejs
     gobject-introspection
+
+    #tools
+    evince
   ];
 }

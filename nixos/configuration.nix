@@ -26,6 +26,7 @@ in {
     ./environment.nix
     ./user-norbert.nix
     ./nvf-configuration.nix
+    #./ags-configuration.nix
   ];
 
   # This value determines the NixOS release from which the default

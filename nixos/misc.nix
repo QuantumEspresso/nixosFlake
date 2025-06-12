@@ -1,8 +1,10 @@
-{ config, pkgs, ... }:
-let
-  games-font = pkgs.callPackage ./games_font.nix {  };
-in
 {
+  config,
+  pkgs,
+  ...
+}: let
+  games-font = pkgs.callPackage ./games_font.nix {};
+in {
   # Set your time zone.
   time.timeZone = "Europe/Warsaw";
 
@@ -34,7 +36,7 @@ in
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -66,8 +68,8 @@ in
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts
-    (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
     games-font
   ];
-
 }

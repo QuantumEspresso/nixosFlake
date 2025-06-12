@@ -1,3 +1,4 @@
 {
-  channelVersion = "24.11";
+  channelVersion = "25.05";
 }
+

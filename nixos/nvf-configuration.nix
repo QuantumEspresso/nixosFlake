@@ -7,6 +7,7 @@
     enable = true;
     settings = {
       vim = {
+        lsp.enable = true;
         #theme = {
         # enable = true;
         # name = "gruvbox";
@@ -15,7 +16,6 @@
         languages = {
           # general settings for all enabled languages
           enableDAP = true;
-          enableLSP = true;
           enableFormat = true;
           enableTreesitter = true;
           enableExtraDiagnostics = true;
@@ -23,13 +23,13 @@
           # languages to recongnize
           bash.enable = true;
           clang.enable = true;
-          css.enable = true;
+          # css.enable = true;
           lua.enable = true;
           markdown.enable = true;
           nix.enable = true;
           python.enable = true;
           rust.enable = true;
-          ts.enable = true;
+          # ts.enable = true;
         };
         options = {
           tabstop = 2;

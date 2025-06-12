@@ -12,16 +12,32 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  boot.initrd.kernelModules = ["amdgpu"];
-  boot.kernelModules = ["kvm-amd"];
-  boot.extraModulePackages = [];
-  boot.supportedFilesystems = ["ntfs"];
-
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+  boot = {
+    initrd.availableKernelModules = ["xhci_pci" "nvme" "ahci" "usb_storage" "usbhid" "sd_mod"];
+    initrd.kernelModules = ["amdgpu"];
+    # boot.kernelModules = ["kvm-amd"];
+    extraModulePackages = [];
+    supportedFilesystems = ["ntfs"];
   };
+
+  # hardware.graphics = {
+  #   enable = true;
+  #   enable32Bit = true;
+  # };
+  #
+  # services.xserver.videoDrivers = ["amdgpu"];
+
+  services.xserver.videoDrivers = lib.mkDefault ["amdgpu"];
+
+  hardware = {
+    graphics = {
+      enable = lib.mkDefault true;
+      enable32Bit = lib.mkDefault true;
+    };
+    amdgpu.opencl.enable = true;
+    amdgpu.initrd.enable = lib.mkDefault true;
+  };
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/b3152b6e-6e90-4638-8efb-93d10541853d";
     fsType = "ext4";
