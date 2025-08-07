@@ -14,7 +14,7 @@ in {
     description = "Norbert";
     home = "/home/norbert";
     createHome = true;
-    extraGroups = ["networkmanager" "wheel" "storage"];
+    extraGroups = ["networkmanager" "wheel" "storage" "docker"];
     hashedPassword = "$6$sUTjGhSgqFFVB0ng$xs9ez/gF/BpcyFNlH4dkqfhbl9Zle/76Hjd9beuqRaeqlinaxfoNJmHSBZOkctr4W9QDmUSH/U5X2S5GbJwuE.";
     useDefaultShell = true;
     packages = with pkgs; [

@@ -29,14 +29,14 @@
 
   services.xserver.videoDrivers = lib.mkDefault ["amdgpu"];
 
-  hardware = {
-    graphics = {
-      enable = lib.mkDefault true;
-      enable32Bit = lib.mkDefault true;
-    };
-    amdgpu.opencl.enable = true;
-    amdgpu.initrd.enable = lib.mkDefault true;
-  };
+  # hardware = {
+  #   graphics = {
+  #     enable = lib.mkDefault true;
+  #     enable32Bit = lib.mkDefault true;
+  #   };
+  #   # amdgpu.opencl.enable = true;
+  #   amdgpu.initrd.enable = lib.mkDefault true;
+  # };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/b3152b6e-6e90-4638-8efb-93d10541853d";

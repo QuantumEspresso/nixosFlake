@@ -3,9 +3,16 @@
   nixpkgs.config.virtualbox.host.enableExtensionPack = true;
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.guest.enable = true;
-  #virtualisation.libvirtd.enable = true;
-  #virtualisation.docker.enable = true;
-  #virtualisation.docker.enableOnBoot = true;
+
+  # virtualisation.libvirtd.enable = true;
+
+  # docker
+  virtualisation.docker.enable = true;
+  virtualisation.docker.enableOnBoot = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
 
   # Enable dconf (System Management Tool)
   programs.dconf.enable = true;
@@ -39,8 +46,8 @@
   services.spice-vdagentd.enable = true;
 
   #distrobox setup requirements
-  virtualisation.podman = {
-    enable = true;
-    dockerCompat = true;
-  };
+  # virtualisation.podman = {
+  #   enable = true;
+  #   dockerCompat = true;
+  # };
 }

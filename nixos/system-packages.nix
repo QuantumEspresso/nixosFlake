@@ -24,6 +24,7 @@
     pavucontrol
     bc
     ntfs3g
+    lsof
 
     # packages for hyprland
     kitty
@@ -49,5 +50,16 @@
 
     #tools
     evince
+
+    #nokia
+    python3Full
+    teams-for-linux
+    vpn-slice
+
+    #programming tools
+    gcc
+    boost
+    openssl
+    gnumake
   ];
 }
