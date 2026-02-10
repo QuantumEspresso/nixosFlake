@@ -20,7 +20,8 @@ in {
     packages = with pkgs; [
       # utilities and tools
       git
-      thefuck
+      # thefuck
+      pay-respects
       pywal
       steam-run
       ripgrep
@@ -125,6 +126,20 @@ in {
       };
     };
 
+    programs.hyprpanel = {
+      enable = true;
+      # (opcjonalnie) automatyczny restart systemd
+      systemd.enable = true;
+      # (opcjonalnie) dodanie do pliku konfiguracyjnego Hyprland (~/.config/hyprland/hyprland.conf)
+      # hyprland.enable = true;
+      # (opcjonalnie) nadpisywanie config.json metodą Home Managera
+      # overwrite.enable = true;
+      # (opcjonalnie) motyw i ustawienia GUI
+      # theme = "gruvbox_split";
+      # settings = { … };  # np. czcionki, layouty, moduły
+      # dontAssertNotificationDaemons = true;
+    };
+
     programs.zsh = {
       enable = true;
       enableCompletion = true;
@@ -151,7 +166,7 @@ in {
           "kubectl"
           "sudo"
           "systemadmin"
-          "thefuck"
+          # "thefuck"
           #  "vi-mode"
         ];
       };
@@ -338,10 +353,14 @@ in {
 
     programs.git = {
       enable = true;
-      userName = "Norbert Janik";
-      userEmail = "norbert.janik@protonmail.com";
+      settings = {
+        user = {
+          name = "Norbert Janik";
+          email = "norbert.janik@protonmail.com";
+        };
+        commit.gpgsign = true;
+      };
       signing.key = "9CE2153C123CBA9F";
-      extraConfig.commit.gpgsign = true;
     };
   };
 }

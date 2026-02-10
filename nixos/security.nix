@@ -1,91 +1,68 @@
+{ config, pkgs, lib, ... }:
+
 {
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
-  # automatically upgrade system
-  system.autoUpgrade = {
+  ##########################
+  # OpenSSH
+  ##########################
+  services.openssh = {
     enable = true;
-    flags = [
-      "--update-input"
-      "nixpkgs"
-      "-L" # print build logs
-    ];
-    dates = "02:00";
-    randomizedDelaySec = "45min";
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
+
+    # Dodatkowa konfiguracja w postaci pliku sshd_config
+    extraConfig = ''
+      PubkeyAuthentication yes
+      # Opcjonalnie inne parametry, np. AuthorizedKeysFile
+    '';
+  };
+  ##########################
+  # YubiKey / GPG agent
+  ##########################
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true; # udostępnia klucze GPG dla ssh-agent
   };
 
-  # automatically clear old generations
-  nix.gc = {
-    automatic = true;
-    persistent = false;
-    dates = "daily";
-    options = "--delete-older-than 7d";
-  };
+  programs.ssh.startAgent = false; # wyłączamy domyślny ssh-agent, używamy gpg-agent
 
-  # allow users to use sudo without password
-  #  security.sudo.extraRules= [
-  #    {
-  #      #users = [ "norbert" ];
-  #      commands = [
-  #        { command = "${pkgs.nethogs}/bin/nethogs" ;
-  #          options= [ "SETENV" "NOPASSWD" ]; # "SETENV" # Adding the following could be a good idea
-  #        }
-  #      ];
-  #      groups = [ "wheel" ];
-  #    }
-  #  ];
+  ##########################
+  # PC/SC daemon do YubiKey / FIDO
+  ##########################
+  services.pcscd.enable = true;
 
-  # Yubikey setup for passwordless login and root
-  security.pam.services = {
-    login.u2fAuth = true; # somehow works well on gdm, but not on sddm :(
-    sudo.u2fAuth = true;
-  };
-
-  # Yubikey settings in u2f pam module
+  ##########################
+  # PAM U2F / YubiKey dla logowania lokalnego
+  ##########################
   security.pam.u2f = {
     enable = true;
-    control = "sufficient";
-    #control = "required";
+    control = "sufficient"; # "required" jeśli chcesz wymusić zawsze
     settings.authfile = pkgs.writeText "u2f-auth-file" ''
       norbert:T4vd6QNqSw8GpMFmygwPXOKCMbqbMY6tEUj8MOPXHIYDddilHrPtzKeAd9xRhJDCQdcWqXw4/EgLRZO6NsIP/Q==,XXDi7y5cpMcwYbciPpqdLokO4HxnqWWclXpO6TD/Ezs146yY8B84umrLGPgK1ICz4PdjAIaUtR1ExAGsX6I6GA==,es256,+presence
     '';
   };
 
+  # Jeśli chcesz włączyć u2f dla login i sudo:
+  security.pam.services = {
+    login.u2fAuth = true;
+    sudo.u2fAuth = true;
+  };
+
+  ##########################
+  # Pakiety potrzebne
+  ##########################
   environment.systemPackages = with pkgs; [
     gnupg
     yubikey-personalization
   ];
 
-  programs.ssh.startAgent = false;
+  # PC/SC dla YubiKey wymaga udev rules
+  services.udev.packages = [ pkgs.yubikey-personalization ];
 
-  environment.shellInit = ''
-    gpg-connect-agent /bye
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  '';
-
-  services = {
-    pcscd.enable = true;
-    udev.packages = [pkgs.yubikey-personalization];
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  ##########################
+  # SSH_AUTH_SOCK w sesjach nie-interaktywnych
+  ##########################
+  # Opcjonalnie, jeśli chcesz żeby sesje SSH widziały agent GPG:
+  environment.variables.SSH_AUTH_SOCK = "${pkgs.gnupg}/libexec/gpg-agent-ssh-socket";
 }

@@ -10,7 +10,7 @@ in
 
     # Enable the GNOME Desktop Environment.
     services.xserver.displayManager.gdm.enable = true;
-    services.xserver.desktopManager.gnome.enable = true;
+    services.displayManager.gdm.enable = true;
     programs.hyprland = {
       # Install the packages from nixpkgs
       enable = true;
@@ -56,7 +56,7 @@ in
       gnome.gnome-themes-extra
       khal
       zathura
-      libsForQt5.dolphin
+      kdePackages.dolphin
       unstable.conky
       imagemagick
       playerctl
@@ -87,7 +87,7 @@ in
       swaylock
       hyprpaper # deprecated, not used
       firefox-wayland
-      qt5.qtwayland
+      kdePackages.qtwayland
       swww
       swaybg
       mpvpaper

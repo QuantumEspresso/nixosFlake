@@ -41,6 +41,7 @@
     hyprland-protocols
     xdg-desktop-portal-hyprland
     kanshi
+    hyprpanel
 
     #ags
     graphene
@@ -50,9 +51,10 @@
 
     #tools
     evince
+    shotwell
 
     #nokia
-    python3Full
+    python3
     teams-for-linux
     vpn-slice
 
