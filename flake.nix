@@ -32,6 +32,7 @@
       specialArgs = {inherit inputs;};
       modules = [
         # Overlays-module makes "pkgs.unstable" available in configuration.nix
+        # gpg test
         ({
           config,
           pkgs,
