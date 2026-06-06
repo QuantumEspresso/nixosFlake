@@ -38,4 +38,25 @@
 
   boot.kernelModules = [ "i2c-dev" "i2c-piix4" "kvm-amd" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
+  
+  # =========================
+  # NIX STORE CLEANUP
+  # =========================
+
+  nix = {
+    gc = {
+      automatic = true;
+      dates = "weekly";
+
+      # usuwa wszystko starsze niż 14 dni
+      options = "--delete-older-than 14d";
+    };
+
+    settings = {
+      auto-optimise-store = true;
+
+      # opcjonalnie (bezpieczne)
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+  };
 }
