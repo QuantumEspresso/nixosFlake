@@ -9,10 +9,11 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-thinkpad.nix
-      ./user-quantum.nix
       ./grub.nix
       ./environment.nix
+      ./security.nix
       ./packages-core.nix
+      ./user-quantum.nix
     ];
 
   # Bootloader.

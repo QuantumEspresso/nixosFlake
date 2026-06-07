@@ -2,16 +2,9 @@
 
 let
   yubikeyPubKey = ../keys/pub.key;
+  yubikeyU2fKey = ../keys/u2f_keys;
 in
 {
-
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-  
-  services.pcscd.enable = true;
-  
   users.mutableUsers = false;
   users.users.quantum = {
     isNormalUser = true;
@@ -69,14 +62,6 @@ in
       syncthing
       # syncthing-tray
       keepassxc
-      # security
-      yubikey-manager
-      yubikey-personalization
-      yubico-piv-tool
-      pcsc-tools
-      opensc
-      gnupg
-      pinentry-qt
     ];
   };
   
@@ -120,6 +105,8 @@ in
       DAB2EB329C21DF827535E63F2B54798C1B2947BE:6:
       EOF
     '';
+    
+    home.file.".config/Yubico/u2f_keys".source = yubikeyU2fKey;
 
   };
 }
