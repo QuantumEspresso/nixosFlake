@@ -53,5 +53,25 @@
         }
       ];
     };
+        nixosConfigurations.PC = nixpkgs-stable.lib.nixosSystem {
+      inherit system;
+
+      specialArgs = {
+        inherit pkgs-unstable;
+        inherit qylock;
+      };
+
+      modules = [
+        ./nixos/configuration.nix
+        ./nixos/hardware-PC.nix
+
+        home-manager.nixosModules.home-manager
+
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
+    };
   };
 }

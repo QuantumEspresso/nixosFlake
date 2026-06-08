@@ -8,7 +8,6 @@
   system.stateVersion = "25.11"; # Did you read the comment?
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-thinkpad.nix
       ./grub.nix
       ./environment.nix
       ./security.nix
