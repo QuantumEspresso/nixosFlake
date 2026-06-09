@@ -9,6 +9,7 @@ in
   users.users.quantum = {
     isNormalUser = true;
     description = "quantum";
+    shell = pkgs.zsh;
 
     extraGroups = [
       "networkmanager"
@@ -31,6 +32,10 @@ in
       yt-dlp
       ranger
       neovim
+      fzf
+      starship
+      zsh-autosuggestions
+      zsh-syntax-highlighting
       # browsers
       brave
       firefox-unwrapped
@@ -176,11 +181,105 @@ in
 
       #package = pkgs.vscode; # albo pkgs.vscodium
 
-      extensions = with pkgs.vscode-extensions; [
+      profiles.default.extensions = with pkgs.vscode-extensions; [
         ms-vscode.live-server
         esbenp.prettier-vscode
         dbaeumer.vscode-eslint
       ];
+    };
+
+    programs.fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    programs.starship = {
+      enable = true;
+
+      settings = {
+        add_newline = false;
+
+        format = "$directory$git_branch$git_status$fill$all$line_break$character";
+
+        directory = {
+          style = "cyan bold";
+          truncation_length = 3;
+          truncate_to_repo = true;
+        };
+
+        git_branch = {
+          symbol = " ";
+          style = "purple bold";
+        };
+
+        git_status = {
+          style = "red";
+          conflicted = "⚡";
+          modified = "●";
+          staged = "+";
+          untracked = "?";
+          ahead = "⇡";
+          behind = "⇣";
+        };
+
+        character = {
+          success_symbol = "[➜](green)";
+          error_symbol = "[✗](red)";
+        };
+      };
+    };
+
+    programs.zsh = {
+      enable = true;
+
+      enableCompletion = true;
+
+      # --- HISTORY ---
+      history = {
+        size = 100000;
+        save = 100000;
+        share = true;
+        ignoreDups = true;
+        ignoreSpace = true;
+      };
+
+      # --- ALIASES ---
+      shellAliases = {
+        ll = "ls -lah";
+        la = "ls -A";
+
+        gs = "git status";
+        ga = "git add";
+        gc = "git commit";
+        gp = "git push";
+        gpl = "git pull";
+
+        ".." = "cd ..";
+        "..." = "cd ../..";
+      };
+
+      # --- INIT ---
+      initContent = ''
+        # ========== PLUGINS ==========
+        source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+        # ========== SHELL BEHAVIOR ==========
+        setopt AUTO_CD
+        setopt HIST_IGNORE_ALL_DUPS
+        setopt SHARE_HISTORY
+        setopt INC_APPEND_HISTORY
+
+        # ========== BETTER COMPLETION ==========
+        autoload -Uz compinit
+        compinit
+
+        zstyle ':completion:*' menu select
+        zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+        # ========== STATUS LINE ==========
+        eval "$(starship init zsh)"
+      '';
     };
 
   };

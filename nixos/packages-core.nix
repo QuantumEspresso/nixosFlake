@@ -13,4 +13,6 @@
     drm_info
     libdrm
   ];
+
+  programs.zsh.enable = true;
 }
