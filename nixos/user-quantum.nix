@@ -193,41 +193,63 @@ in
       enableZshIntegration = true;
     };
 
-    programs.starship = {
-      enable = true;
+programs.starship = {
+  enable = true;
+  enableZshIntegration = true;
 
-      settings = {
-        add_newline = false;
+  settings = {
+    add_newline = false;
 
-        format = "$directory$git_branch$git_status$fill$all$line_break$character";
+    # 🔥 segmentowy prompt jak statusline
+    format = "$directory$git_branch$git_status$fill$cmd_duration$line_break$character";
 
-        directory = {
-          style = "cyan bold";
-          truncation_length = 3;
-          truncate_to_repo = true;
-        };
-
-        git_branch = {
-          symbol = " ";
-          style = "purple bold";
-        };
-
-        git_status = {
-          style = "red";
-          conflicted = "⚡";
-          modified = "●";
-          staged = "+";
-          untracked = "?";
-          ahead = "⇡";
-          behind = "⇣";
-        };
-
-        character = {
-          success_symbol = "[➜](green)";
-          error_symbol = "[✗](red)";
-        };
-      };
+    # --- DIRECTORY ---
+    directory = {
+      style = "bold cyan";
+      truncation_length = 3;
+      truncate_to_repo = true;
+      read_only = "🔒";
     };
+
+    # --- GIT BRANCH ---
+    git_branch = {
+      symbol = " ";
+      style = "bold purple";
+      format = "on [$symbol$branch]($style) ";
+    };
+
+    # --- GIT STATUS (mega ważne) ---
+    git_status = {
+      format = "([($all_status$ahead_behind)]($style) )";
+      style = "bold red";
+
+      conflicted = "✖";
+      modified = "●";
+      staged = "✔";
+      untracked = "…";
+      ahead = "⇡";
+      behind = "⇣";
+      diverged = "⇕";
+    };
+
+    # --- TIME / COMMAND DURATION ---
+    cmd_duration = {
+      min_time = 500;
+      format = "took [$duration](yellow) ";
+    };
+
+    # --- PROMPT ARROW (statusline vibe) ---
+    character = {
+      success_symbol = "[❯](bold green)";
+      error_symbol = "[❯](bold red)";
+    };
+
+    # opcjonalnie: separator “statusline feel”
+    fill = {
+      symbol = " ";
+    };
+  };
+};
 
     programs.zsh = {
       enable = true;
