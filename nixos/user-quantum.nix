@@ -167,7 +167,33 @@ in
       done
     '';
 
-###############   PROGRAMS   ######################
+    ###############   PROGRAMS   ######################
+
+    programs.ssh = {
+      enable = true;
+
+      matchBlocks = {
+        router = {
+          hostname = "192.168.8.1";
+          user = "root";
+        };
+
+        proxmox = {
+          hostname = "192.168.8.50";
+          user = "root";
+        };
+
+        wedding = {
+          hostname = "192.168.8.51";
+          user = "root";
+        };
+
+        ai = {
+          hostname = "192.168.8.173";
+          user = "quantum";
+        };
+      };
+    };
 
     programs.vscode = {
       enable = true;
