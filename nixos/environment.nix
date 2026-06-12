@@ -90,7 +90,6 @@ in {
     curl
 
     # Hyprland ecosystem
-    kanshi
     udiskie
     bluez
     libnotify
