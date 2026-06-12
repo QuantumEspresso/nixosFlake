@@ -60,4 +60,15 @@
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   
   programs.gpu-screen-recorder.enable = true;
+
+  # graphics
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  # host name in network
+  networking.hostName = "NixPC"; # Define your hostname.
+
 }

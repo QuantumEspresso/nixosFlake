@@ -53,7 +53,7 @@
         }
       ];
     };
-        nixosConfigurations.PC = nixpkgs-stable.lib.nixosSystem {
+    nixosConfigurations.PC = nixpkgs-stable.lib.nixosSystem {
       inherit system;
 
       specialArgs = {
@@ -64,6 +64,26 @@
       modules = [
         ./nixos/configuration.nix
         ./nixos/hardware-PC.nix
+
+        home-manager.nixosModules.home-manager
+
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+        }
+      ];
+    };
+    nixosConfigurations.ai = nixpkgs-stable.lib.nixosSystem {
+      inherit system;
+
+      specialArgs = {
+        inherit pkgs-unstable;
+      };
+
+      modules = [
+        ./nixos/hardware-ai.nix
+        ./nixos/ai.nix
+        ./nixos/user-quantum.nix
 
         home-manager.nixosModules.home-manager
 

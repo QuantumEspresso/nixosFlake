@@ -23,6 +23,10 @@ in
     # security
     hashedPassword = "$6$sUTjGhSgqFFVB0ng$xs9ez/gF/BpcyFNlH4dkqfhbl9Zle/76Hjd9beuqRaeqlinaxfoNJmHSBZOkctr4W9QDmUSH/U5X2S5GbJwuE.";
 
+    openssh.authorizedKeys.keys = [
+      (builtins.readFile ../keys/ssh.pub)
+    ];
+
     packages = with pkgs; [
     
       # terminal stuff
@@ -64,6 +68,7 @@ in
       steam
       cmus
       vlc
+      mpv
       spotify
       # other
       syncthing
@@ -222,63 +227,63 @@ in
       enableZshIntegration = true;
     };
 
-programs.starship = {
-  enable = true;
-  enableZshIntegration = true;
+    programs.starship = {
+      enable = true;
+      enableZshIntegration = true;
 
-  settings = {
-    add_newline = false;
+      settings = {
+        add_newline = false;
 
-    # 🔥 segmentowy prompt jak statusline
-    format = "$directory$git_branch$git_status$fill$cmd_duration$line_break$character";
+        # 🔥 segmentowy prompt jak statusline
+        format = "$directory$git_branch$git_status$fill$cmd_duration$line_break$character";
 
-    # --- DIRECTORY ---
-    directory = {
-      style = "bold cyan";
-      truncation_length = 3;
-      truncate_to_repo = true;
-      read_only = "🔒";
+        # --- DIRECTORY ---
+        directory = {
+          style = "bold cyan";
+          truncation_length = 3;
+          truncate_to_repo = true;
+          read_only = "🔒";
+        };
+
+        # --- GIT BRANCH ---
+        git_branch = {
+          symbol = " ";
+          style = "bold purple";
+          format = "on [$symbol$branch]($style) ";
+        };
+
+        # --- GIT STATUS (mega ważne) ---
+        git_status = {
+          format = "([($all_status$ahead_behind)]($style) )";
+          style = "bold red";
+
+          conflicted = "✖";
+          modified = "●";
+          staged = "✔";
+          untracked = "…";
+          ahead = "⇡";
+          behind = "⇣";
+          diverged = "⇕";
+        };
+
+        # --- TIME / COMMAND DURATION ---
+        cmd_duration = {
+          min_time = 500;
+          format = "took [$duration](yellow) ";
+        };
+
+        # --- PROMPT ARROW (statusline vibe) ---
+        character = {
+          success_symbol = "[❯](bold green)";
+          error_symbol = "[❯](bold red)";
+        };
+
+        # opcjonalnie: separator “statusline feel”
+        fill = {
+          symbol = " ";
+        };
+      };
     };
-
-    # --- GIT BRANCH ---
-    git_branch = {
-      symbol = " ";
-      style = "bold purple";
-      format = "on [$symbol$branch]($style) ";
-    };
-
-    # --- GIT STATUS (mega ważne) ---
-    git_status = {
-      format = "([($all_status$ahead_behind)]($style) )";
-      style = "bold red";
-
-      conflicted = "✖";
-      modified = "●";
-      staged = "✔";
-      untracked = "…";
-      ahead = "⇡";
-      behind = "⇣";
-      diverged = "⇕";
-    };
-
-    # --- TIME / COMMAND DURATION ---
-    cmd_duration = {
-      min_time = 500;
-      format = "took [$duration](yellow) ";
-    };
-
-    # --- PROMPT ARROW (statusline vibe) ---
-    character = {
-      success_symbol = "[❯](bold green)";
-      error_symbol = "[❯](bold red)";
-    };
-
-    # opcjonalnie: separator “statusline feel”
-    fill = {
-      symbol = " ";
-    };
-  };
-};
 
     programs.zsh = {
       enable = true;

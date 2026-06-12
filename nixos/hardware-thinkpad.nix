@@ -40,4 +40,7 @@
   };
 
   programs.gpu-screen-recorder.enable = true;
+
+  # host name in network
+  networking.hostName = "NixThinkPad"; # Define your hostname.
 }

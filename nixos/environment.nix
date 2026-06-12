@@ -2,18 +2,18 @@
 let
   games-font = pkgs.callPackage ./games_font.nix {};
   
-pixel-munchlax = pkgs.stdenvNoCC.mkDerivation {
-  pname = "pixel-munchlax";
-  version = "git";
+  pixel-munchlax = pkgs.stdenvNoCC.mkDerivation {
+    pname = "pixel-munchlax";
+    version = "git";
 
-  src = qylock;
+    src = qylock;
 
-installPhase = ''
-  mkdir -p $out/share/sddm/themes/pixel-munchlax
-  cp -r $src/themes/pixel-munchlax/. \
-    $out/share/sddm/themes/pixel-munchlax/
-'';
-};
+    installPhase = ''
+      mkdir -p $out/share/sddm/themes/pixel-munchlax
+      cp -r $src/themes/pixel-munchlax/. \
+        $out/share/sddm/themes/pixel-munchlax/
+    '';
+  };
 in {
   # Time / locale
   time.timeZone = "Europe/Warsaw";
