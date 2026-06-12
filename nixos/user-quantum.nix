@@ -16,6 +16,8 @@ in
       "wheel"
       "docker"
       "storage"
+      "video"
+      "render"
     ];
 
     # security
@@ -171,6 +173,7 @@ in
 
     programs.ssh = {
       enable = true;
+      enableDefaultConfig = false;
 
       matchBlocks = {
         router = {

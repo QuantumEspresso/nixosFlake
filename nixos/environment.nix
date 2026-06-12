@@ -139,8 +139,7 @@ in {
     evtest
 
     # GPU monitors
-    nvtopPackages.intel
-    nvtopPackages.amd
+    nvtopPackages.full
 
     # Quickshell + Qt
     quickshell
