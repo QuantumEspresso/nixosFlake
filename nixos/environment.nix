@@ -96,7 +96,7 @@ in {
     hyprsunset
     hyprpicker
     hyprlock
-    swww
+    awww
     lm_sensors
     jq
     desktop-file-utils
@@ -116,9 +116,9 @@ in {
     networkmanager
 
     # File manager
-    xfce.thunar
-    xfce.thunar-volman
-    xfce.thunar-archive-plugin
+    thunar
+    thunar-volman
+    thunar-archive-plugin
     gvfs
 
     # Screenshots / recording

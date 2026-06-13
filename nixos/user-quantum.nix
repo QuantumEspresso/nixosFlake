@@ -82,7 +82,7 @@ in
     pkgs,
     ...
   }: {
-    home.stateVersion = "25.11";
+    home.stateVersion = "26.05";
 
 ############  GPG and SSH Yubikey config   ####################
     programs.git = {
@@ -121,66 +121,13 @@ in
     
     home.file.".config/Yubico/u2f_keys".source = yubikeyU2fKey;
 
-##############  dot files   ######################
-
-    home.activation.cloneDotfiles = ''
-      set -e
-
-      HYPR_DIR="$HOME/.config/hypr"
-      QUICKSHELL_DIR="$HOME/.config/quickshell"
-
-      if [ ! -d "$HYPR_DIR/.git" ]; then
-        echo "Cloning hyprland_config..."
-        ${pkgs.git}/bin/git clone https://github.com/QuantumEspresso/hyprland_config "$HYPR_DIR"
-      fi
-
-      if [ ! -d "$QUICKSHELL_DIR/.git" ]; then
-        echo "Cloning quickshell..."
-        ${pkgs.git}/bin/git clone https://github.com/QuantumEspresso/quickshell "$QUICKSHELL_DIR"
-      fi
-    '';
-
-    home.activation.dotfilesRepo = ''
-      set -e
-
-      REPO_DIR="$HOME/Projects/dotfiles"
-      REPO_URL="https://github.com/QuantumEspresso/dotfiles"
-
-      if [ ! -d "$REPO_DIR/.git" ]; then
-        echo "Cloning dotfiles repo..."
-        ${pkgs.git}/bin/git clone "$REPO_URL" "$REPO_DIR"
-      else
-        echo "Updating dotfiles repo..."
-        ${pkgs.git}/bin/git -C "$REPO_DIR" pull --ff-only
-      fi
-    '';
-
-    home.activation.dotfilesSymlinks = ''
-      set -e
-
-      DOTFILES="$HOME/Projects/dotfiles"
-
-      mkdir -p "$HOME/.config"
-
-      for d in cava alacritty matugen; do
-        TARGET="$HOME/.config/$d"
-        SOURCE="$DOTFILES/$d"
-
-        if [ -e "$TARGET" ] && [ ! -L "$TARGET" ]; then
-          rm -rf "$TARGET"
-        fi
-
-        ln -sfn "$SOURCE" "$TARGET"
-      done
-    '';
-
     ###############   PROGRAMS   ######################
 
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
 
-      matchBlocks = {
+      settings = {
         router = {
           hostname = "192.168.8.1";
           user = "root";
