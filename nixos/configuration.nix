@@ -13,6 +13,7 @@
       ./security.nix
       ./packages-core.nix
       ./user-quantum.nix
+      ./gaming.nix
     ];
 
   # Bootloader.

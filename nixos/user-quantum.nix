@@ -31,7 +31,6 @@ in
     
       # terminal stuff
       git
-      steam-run
       cmatrix
       appimage-run
       pdftk
@@ -65,7 +64,6 @@ in
       # communicators and media
       signal-desktop
       discord
-      steam
       cmus
       vlc
       mpv
