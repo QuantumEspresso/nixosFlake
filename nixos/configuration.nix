@@ -45,12 +45,61 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.enable = true;
+    wireplumber.extraConfig = {
+      "alsa" = {
+        "monitor.alsa.reserve-device" = false;
+      };
+    };
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     #media-session.enable = true;
+  };
+
+  systemd.user.services.pipewire = {
+    serviceConfig = {
+      Restart = "on-failure";
+    };
+  };
+
+  systemd.user.services.pipewire-pulse = {
+    after = [ "pipewire.service" ];
+    requires = [ "pipewire.service" ];
+    serviceConfig = {
+      Restart = "on-failure";
+    };
+  };
+
+  systemd.user.services.wireplumber = {
+    after = [ "pipewire.service" ];
+    requires = [ "pipewire.service" ];
+    serviceConfig = {
+      Restart = "on-failure";
+    };
+  };
+
+  systemd.user.services.pipewire-pulse.serviceConfig.ExecStartPre = ''
+    /bin/sleep 1
+  '';
+
+  environment.etc."wireplumber/main.lua.d/50-alsa-config.lua".text = ''
+  alsa_monitor.rules = {
+    {
+      matches = { { { "device.name", "matches", "alsa_card.*" } } },
+      apply_properties = {
+        ["api.acp.auto-profile"] = false,
+        ["api.alsa.soft-mixer"] = true,
+      }
+    }
+  }
+  '';
+
+  environment.sessionVariables = {
+    SDL_AUDIODRIVER = "pipewire";
+    PIPEWIRE_LATENCY = "512/48000";
   };
 
   # Enable touchpad support (enabled default in most desktopManager).

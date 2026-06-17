@@ -1,7 +1,12 @@
 { config, pkgs, pkgs-unstable, ... }:
 
 {
-  programs.steam.enable = true;
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
+  };
 
   hardware.graphics = {
     enable = true;
@@ -10,15 +15,7 @@
 
   environment.systemPackages = with pkgs; [
     steam
-    libpulseaudio
   ];
 
-environment.sessionVariables = {
-  STEAM_RUNTIME = "0";
-};
-
-environment.sessionVariables = {
-  STEAM_RUNTIME_PREFER_HOST_LIBRARIES = "1";
-};
 
 }
