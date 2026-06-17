@@ -57,6 +57,7 @@ in {
 
   programs.hyprland = {
     enable = true;
+    withUWSM = false;
     package = pkgs-unstable.hyprland;
     xwayland.enable = true;
   };
