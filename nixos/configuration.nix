@@ -59,49 +59,6 @@
     #media-session.enable = true;
   };
 
-  systemd.user.services.pipewire = {
-    serviceConfig = {
-      Restart = "on-failure";
-    };
-  };
-
-  systemd.user.services.pipewire-pulse = {
-    after = [ "pipewire.service" ];
-    requires = [ "pipewire.service" ];
-    serviceConfig = {
-      Restart = "on-failure";
-    };
-  };
-
-  systemd.user.services.wireplumber = {
-    after = [ "pipewire.service" ];
-    requires = [ "pipewire.service" ];
-    serviceConfig = {
-      Restart = "on-failure";
-    };
-  };
-
-  systemd.user.services.pipewire-pulse.serviceConfig.ExecStartPre = ''
-    /bin/sleep 1
-  '';
-
-  environment.etc."wireplumber/main.lua.d/50-alsa-config.lua".text = ''
-  alsa_monitor.rules = {
-    {
-      matches = { { { "device.name", "matches", "alsa_card.*" } } },
-      apply_properties = {
-        ["api.acp.auto-profile"] = false,
-        ["api.alsa.soft-mixer"] = true,
-      }
-    }
-  }
-  '';
-
-  environment.sessionVariables = {
-    SDL_AUDIODRIVER = "pipewire";
-    PIPEWIRE_LATENCY = "512/48000";
-  };
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 

@@ -68,6 +68,7 @@ in
       vlc
       mpv
       spotify
+      audacity
       # other
       syncthing
       # syncthing-tray

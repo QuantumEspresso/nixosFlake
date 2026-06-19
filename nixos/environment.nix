@@ -98,6 +98,7 @@ in {
     hyprpicker
     hyprlock
     awww
+    mpvpaper
     lm_sensors
     jq
     desktop-file-utils
