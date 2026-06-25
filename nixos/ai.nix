@@ -14,6 +14,33 @@
     ];
   };
 
+  networking.enableIPv6 = false;
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+  services.resolved.enable = false;
+
+  # ------------------------------------------------------------
+  # MODELS PARTITION ACCESS
+  # ------------------------------------------------------------
+
+  systemd.tmpfiles.rules = [
+    "d /data 0755 root root -"
+    "d /data/ollama 0755 ollama ollama -"
+  ];
+
+  systemd.services.fix-ollama-data-perms = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "local-fs.target" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+    };
+
+    script = ''
+      mkdir -p /data/ollama
+      chown -R ollama:ollama /data/ollama
+    '';
+  };
+
   # ------------------------------------------------------------
   # SSH SERVER (remote maintenance over LAN)
   # ------------------------------------------------------------
@@ -36,6 +63,7 @@
     wget
     htop
     vim
+    jq
 
     # LLM tooling
     llama-cpp
@@ -46,22 +74,24 @@
 
     # network debug
     iperf3
+    openssl
+
+    # ROCm tools (AMD)
+    rocmPackages.rocminfo
+    rocmPackages.rocm-smi
+    rocmPackages.clr
+    rocmPackages.rocblas
+    rocmPackages.rocsparse
   ];
 
   # ------------------------------------------------------------
   # GPU / ACCELERATION BASELINE
   # ------------------------------------------------------------
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
 
-  # ROCm tools (AMD)
-  environment.systemPackages = with pkgs; [
-    rocmPackages.rocminfo
-    rocmPackages.rocm-smi
-  ];
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   # ------------------------------------------------------------
   # OLLAMA (core LLM runtime)
@@ -69,12 +99,14 @@
   services.ollama = {
     enable = true;
 
+    home = "/data/ollama";
+
     # ważne: LAN access
     host = "0.0.0.0";
     port = 11434;
 
     # backend acceleration (zmień jeśli trzeba)
-    acceleration = "rocm";  # "cuda" / null / rocm
+    # acceleration = "rocm";  # "cuda" / null / rocm
   };
 
   # ------------------------------------------------------------
@@ -85,6 +117,20 @@
 
     host = "0.0.0.0";
     port = 8080;
+    environment = {
+      OLLAMA_BASE_URL = "http://127.0.0.1:11434";
+      ENABLE_WEB_SEARCH = "true";
+      ENABLE_TOOLS = "true";
+      ENABLE_AGENT_MODE = "true";
+      WEB_SEARCH_ENABLED = "true";
+      WEB_SEARCH_ENGINE = "searxng";
+      SEARCH_RESULT_LIMIT = "30";
+      WEB_SEARCH_RESULT_COUNT = "10";
+      SEARCH_MIN_SCORE = "0";
+      #BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL = "true";
+      #BYPASS_WEB_SEARCH_WEB_LOADER = "true";
+    };
+
   };
 
   # ------------------------------------------------------------
@@ -97,11 +143,16 @@
       server = {
         bind_address = "0.0.0.0";
         port = 8081;
-        secret_key = "change-me-please"; # wymagane
+        limiter = false;
+        secret_key = "8855c6d5898e2d49b63275c8d6a0c23c1f983238dea2f549670ffaf399ace6b7";
       };
 
       search = {
         safe_search = 0;
+        formats = [
+          "html"
+          "json"
+        ];
       };
     };
   };
@@ -117,6 +168,27 @@
   # USER EXPERIENCE (opcjonalne, ale praktyczne)
   # ------------------------------------------------------------
   services.tailscale.enable = false; # możesz włączyć później
+
+  # ------------------------------------------------------------
+  # LAN VISIBILITY CONFIGURATION
+  # ------------------------------------------------------------
+  services.nginx = {
+    enable = true;
+
+    virtualHosts."ai.local" = {
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8080";
+      };
+
+      locations."/ollama/" = {
+        proxyPass = "http://127.0.0.1:11434";
+      };
+
+      locations."/search/" = {
+        proxyPass = "http://127.0.0.1:8081";
+      };
+    };
+  };
 
   # host name in network
   networking.hostName = "NixAI"; # Define your hostname.
