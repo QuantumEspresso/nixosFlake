@@ -82,8 +82,7 @@
 
       modules = [
         ./nixos/hardware-ai.nix
-        ./nixos/ai.nix
-        ./nixos/user-quantum.nix
+        ./nixos/configuration-ai.nix
 
         home-manager.nixosModules.home-manager
 

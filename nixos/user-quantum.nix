@@ -41,6 +41,7 @@ in
       starship
       zsh-autosuggestions
       zsh-syntax-highlighting
+      unzip
       # browsers
       brave
       firefox-unwrapped
