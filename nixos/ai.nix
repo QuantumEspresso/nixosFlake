@@ -101,6 +101,8 @@
   services.ollama = {
     enable = true;
 
+    package = pkgs-unstable.ollama-rocm;
+
     home = "/data/ollama";
 
     # ważne: LAN access
@@ -117,19 +119,15 @@
   services.open-webui = {
     enable = true;
 
+    package = pkgs-unstable.open-webui;
+
     host = "0.0.0.0";
     port = 8080;
     environment = {
       OLLAMA_BASE_URL = "http://127.0.0.1:11434";
-      ENABLE_WEB_SEARCH = "true";
-      ENABLE_TOOLS = "true";
-      ENABLE_AGENT_MODE = "true";
-      WEB_SEARCH_ENABLED = "true";
-      WEB_SEARCH_ENGINE = "searxng";
-      SEARCH_RESULT_LIMIT = "30";
-      WEB_SEARCH_RESULT_COUNT = "10";
-      SEARCH_MIN_SCORE = "0";
       ENABLE_SIGNUP = "true";
+      ENABLE_WEB_SEARCH = "true";
+      WEB_SEARCH_ENGINE = "searxng";
       SEARXNG_QUERY_URL = "http://127.0.0.1:8081/search";
     };
 
