@@ -2,6 +2,37 @@
 
 {
   # ------------------------------------------------------------
+  # SYSTEM BASE PACKAGES
+  # ------------------------------------------------------------
+  environment.systemPackages = with pkgs; [
+    git
+    curl
+    wget
+    htop
+    vim
+    jq
+
+    # LLM tooling
+    llama-cpp
+
+    # debugging GPU / system
+    pciutils
+    usbutils
+
+    # network debug
+    iperf3
+    openssl
+
+    # ROCm tools (AMD)
+    rocmPackages.rocminfo
+    rocmPackages.rocm-smi
+    rocmPackages.clr
+    rocmPackages.rocblas
+    rocmPackages.rocsparse
+  ];
+
+
+  # ------------------------------------------------------------
   # NETWORK / LAN ACCESS
   # ------------------------------------------------------------
   networking.firewall = {
@@ -54,35 +85,6 @@
     };
   };
 
-  # ------------------------------------------------------------
-  # SYSTEM BASE PACKAGES
-  # ------------------------------------------------------------
-  environment.systemPackages = with pkgs; [
-    git
-    curl
-    wget
-    htop
-    vim
-    jq
-
-    # LLM tooling
-    llama-cpp
-
-    # debugging GPU / system
-    pciutils
-    usbutils
-
-    # network debug
-    iperf3
-    openssl
-
-    # ROCm tools (AMD)
-    rocmPackages.rocminfo
-    rocmPackages.rocm-smi
-    rocmPackages.clr
-    rocmPackages.rocblas
-    rocmPackages.rocsparse
-  ];
 
   # ------------------------------------------------------------
   # GPU / ACCELERATION BASELINE
@@ -127,8 +129,8 @@
       SEARCH_RESULT_LIMIT = "30";
       WEB_SEARCH_RESULT_COUNT = "10";
       SEARCH_MIN_SCORE = "0";
-      #BYPASS_WEB_SEARCH_EMBEDDING_AND_RETRIEVAL = "true";
-      #BYPASS_WEB_SEARCH_WEB_LOADER = "true";
+      ENABLE_SIGNUP = "true";
+      SEARXNG_QUERY_URL = "http://127.0.0.1:8081/search";
     };
 
   };

@@ -181,7 +181,6 @@ in
       settings = {
         add_newline = false;
 
-        # 🔥 segmentowy prompt jak statusline
         format = "$directory$git_branch$git_status$fill$cmd_duration$line_break$character";
 
         # --- DIRECTORY ---
