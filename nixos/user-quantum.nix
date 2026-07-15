@@ -279,6 +279,10 @@ in
         zstyle ':completion:*' menu select
         zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
+        # ========== CTRL+ARROW KEYBINDINGS ==========
+        bindkey '^[[1;5D' backward-word
+        bindkey '^[[1;5C' forward-word
+
         # ========== STATUS LINE ==========
         eval "$(starship init zsh)"
       '';
@@ -286,3 +290,4 @@ in
 
   };
 }
+
